@@ -178,7 +178,6 @@ st.markdown(
 if "variables" not in st.session_state:
     st.session_state.variables = [
         {"name": "변수 A", "min": 0.0, "max": 100.0, "dist": "정규", "weight": 1.0},
-        {"name": "변수 B", "min": 0.0, "max": 50.0,  "dist": "삼각", "weight": 1.0},
     ]
 if "results_df" not in st.session_state:
     st.session_state.results_df = None
@@ -398,7 +397,7 @@ st.markdown(
         <p>
             총 <strong>{total_runs:,}회</strong> 반복 &nbsp;·&nbsp;
             변수 <strong>{len(st.session_state.variables)}개</strong> &nbsp;·&nbsp;
-            90% 신뢰 구간: <strong>[{ci['p5']:.2f} → {ci['p95']:.2f}]</strong>
+            90% 신뢰 구간: <strong>[{ci['p5']:,.2f} → {ci['p95']:,.2f}]</strong>
         </p>
     </div>
     """,
@@ -410,7 +409,7 @@ c1, c2, c3, c4 = st.columns(4)
 cards = [
     (c1, "🔵 P5 — 하위 5%",  ci["p5"],   "90% 범위 최저치", "val-blue"),
     (c2, "🟣 P95 — 상위 5%", ci["p95"],  "90% 범위 최고치", "val-purple"),
-    (c3, "🟢 평균",           ci["mean"], f"중앙값 {ci['median']:.2f}", "val-green"),
+    (c3, "🟢 평균",           ci["mean"], f"중앙값 {ci['median']:,.2f}", "val-green"),
     (c4, "🟠 표준편차",       ci["std"],  "결과 분산 정도",  "val-orange"),
 ]
 for col, label, val, sub, cls in cards:
@@ -418,7 +417,7 @@ for col, label, val, sub, cls in cards:
         f"""
         <div class="card">
             <div class="card-label">{label}</div>
-            <div class="card-value {cls}">{val:.2f}</div>
+            <div class="card-value {cls}">{val:,.2f}</div>
             <div class="card-sub">{sub}</div>
         </div>
         """,
@@ -453,9 +452,9 @@ with tab1:
     )
     # 수직선
     for val, label, color in [
-        (p5,        f"P5: {p5:.2f}",         "#2563eb"),
-        (p95,       f"P95: {p95:.2f}",        "#7c3aed"),
-        (ci["mean"],f"평균: {ci['mean']:.2f}","#059669"),
+        (p5,        f"P5: {p5:,.2f}",         "#2563eb"),
+        (p95,       f"P95: {p95:,.2f}",        "#7c3aed"),
+        (ci["mean"],f"평균: {ci['mean']:,.2f}","#059669"),
     ]:
         fig_hist.add_vline(
             x=val, line_dash="dash", line_color=color, line_width=2,
@@ -497,7 +496,7 @@ with tab2:
     ))
     fig_conv.add_hline(
         y=ci["mean"], line_dash="dot", line_color="#059669", line_width=2,
-        annotation_text=f"최종 평균: {ci['mean']:.4f}",
+        annotation_text=f"최종 평균: {ci['mean']:,.4f}",
         annotation_font_color="#059669",
         annotation_position="right",
     )
@@ -511,7 +510,7 @@ with tab2:
     st.plotly_chart(fig_conv, use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
     st.caption(
-        f"수렴 상태: 최종 평균 **{ci['mean']:.4f}** | 총 **{total_runs:,}회** 반복 수행"
+        f"수렴 상태: 최종 평균 **{ci['mean']:,.4f}** | 총 **{total_runs:,}회** 반복 수행"
     )
 
 # ────────────────────────────
